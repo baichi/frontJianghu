@@ -1,13 +1,19 @@
 var express = require('express');
 var path = require('path');
 var fs = require('fs');
+var routes = require('./routes/index');
+var users = require('./routes/users');
+var bodyParser = require('body-parser');
+
 var app = express();//生成express中间件
 //设置静态文件目录
 app.use(express.static(path.join(__dirname,'static')));
-//设置基础路由
-app.use(function(req,res){
-    res.sendFile(path.join(__dirname,'static','index.html'));
-});
+//解析 请求体的数据，把请求体转成对象放在req.body上
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:false}));
+app.use('/',routes);
+app.use('/users',users);
+
 var server = app.listen(8080);
 var io = require('socket.io').listen(server);
 var messages = [];
