@@ -1,21 +1,45 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="frontModule">
 <head lang="en">
     <meta charset="UTF-8">
     <title></title>
-    <link rel="stylesheet" href="/components/bootstrap/dist/css/bootstrap.css"/>
-    <script src="/components/jquery/dist/jquery.js"></script>
-    <script src="/components/bootstrap/dist/js/bootstrap.js"></script>
-    <script src="/components/angular/angular.js"></script>
+    <link rel="stylesheet" href="components/bootstrap/dist/css/bootstrap.css"/>
+    <script src="components/jquery/dist/jquery.js"></script>
+    <script src="components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="components/angular/angular.js"></script>
     <script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
-<div class="navbar navbar-default navbar-fixed-top">
+<nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
             <a href="">前端江湖</a>
         </div>
     </div>
+</nav>
+<div class="container">
+   <div class="row">
+       <div class="col-md-12">
+           <div class="panel panel-default">
+               <div class="panel-heading">前端江湖</div>
+               <div class="panel-body" ng-controller="RoomCtrl">
+                   <div class="list-group">
+                       <div class="list-group-item" ng-repeat="message in messages track by $index">
+                           匿名: {{message}}
+                       </div>
+                   </div>
+               </div>
+               <div class="panel-footer">
+                   <form action="" role="form" ng-controller="MessageCtrl">
+                       <div class="form-group">
+                           <textarea required name="newMessage" class="form-control"
+                                     ng-model="newMessage" ng-click="createMessage()"></textarea>
+                       </div>
+                   </form>
+               </div>
+           </div>
+       </div>
+   </div>
 </div>
 </body>
 <script>
@@ -29,6 +53,16 @@
     socket.on('message',function(message){
         console.log(message);
         socket.emit('message',message+' too');
+    });
+
+    var app = angular.module('frontModule',[]);
+    app.controller('RoomCtrl',function($rootScope,$scope){
+        $rootScope.messages = ['默认聊天信息'];
+    });
+    app.controller('MessageCtrl',function($rootScope,$scope){
+        $scope.createMessage = function(){
+            $rootScope.messages.push($scope.newMessage);
+        }
     });
 </script>
 </html>
