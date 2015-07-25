@@ -1,1 +1,18 @@
-angular.module('frontModule',[]);
+angular.module('frontModule',['ngRoute'])
+    .config(function($routeProvider){
+    $routeProvider.when('/',{
+        templateUrl:'tmpl/home.html',
+        controller:'HomeCtrl'
+    }).when('/reg',{
+        templateUrl:'tmpl/reg.html',
+        controller:'RegCtrl'
+    }).when('/login',{
+        templateUrl:'tmpl/login.html',
+        controller:'LoginCtrl'
+    }).when('/street',{
+        templateUrl:'tmpl/street.html',
+        controller:'StreetCtrl'
+    }).otherwise({
+        redirectTo:'/'
+    });
+});
