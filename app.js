@@ -6,13 +6,17 @@ var app = express();//生成express中间件
 app.use(express.static(path.join(__dirname,'static')));
 //设置基础路由
 app.use(function(req,res){
-    console.log(req.url);
     res.sendFile(path.join(__dirname,'static','index.html'));
 });
 var server = app.listen(8080);
 var io = require('socket.io').listen(server);
+var messages = [];
 io.on('connection',function(socket){
     socket.on('message',function(message){
+        messages.push(message);
         io.emit('message',message);
+    });
+    socket.on('getAllMessages',function(){
+        socket.emit('allMessages',messages);
     });
 });

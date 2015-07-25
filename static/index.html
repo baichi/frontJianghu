@@ -23,7 +23,7 @@
            <div class="panel panel-default">
                <div class="panel-heading">前端江湖</div>
                <div class="panel-body" ng-controller="RoomCtrl">
-                   <div class="list-group">
+                   <div class="list-group" auto-scroll style="height:300px;overflow-y:auto">
                        <div class="list-group-item" ng-repeat="message in messages track by $index">
                            匿名: {{message}}
                        </div>
@@ -43,16 +43,16 @@
 </div>
 </body>
 <script>
-
-
-
     var app = angular.module('frontModule',[]);
+    app.run(function(socket){
+
+
+    });
     app.factory('socket',function($rootScope){
         var socket = io();
         return {
             on:function(event,callback){
                 socket.on(event,function(){
-                    console.log('callback');
                     var args = arguments;
                     $rootScope.$apply(function(){
                         callback.apply(socket,args);
@@ -67,6 +67,10 @@
 
     app.controller('RoomCtrl',function($scope,socket){
         $scope.messages = [];
+        socket.on('allMessages',function(messages){
+            $scope.messages = messages;
+        });
+        socket.emit('getAllMessages');
         socket.on('message',function(message){
             $scope.messages.push(message);
         });
@@ -74,6 +78,20 @@
     app.controller('MessageCtrl',function($rootScope,$scope,socket){
         $scope.createMessage = function(){
             socket.emit('message',$scope.newMessage);
+            $scope.newMessage = '';
+        }
+    });
+    app.directive('autoScroll',function(){
+        return {
+            link:function(scope,element,attrs){
+                scope.$watch(function(){
+                    return element.children().length;
+                },function(){
+                    element.animate({
+                        scrollTop:element.prop('scrollHeight')
+                    },300);
+                });
+            }
         }
     });
     app.directive('ctrlEnterNewLine',function(){
