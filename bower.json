@@ -1,0 +1,29 @@
+{
+  "name": "frontjianghu",
+  "version": "1.0.0",
+  "homepage": "https://github.com/zhufengnodejs/frontJianghu",
+  "authors": [
+    "zhangrenyang-t510 <zhang_renyang@>"
+  ],
+  "description": "front jianghu",
+  "moduleType": [
+    "node"
+  ],
+  "keywords": [
+    "angular",
+    "node",
+    "express"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.5",
+    "angular": "~1.4.3"
+  }
+}
