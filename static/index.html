@@ -32,8 +32,8 @@
                <div class="panel-footer">
                    <form action="" role="form" ng-controller="MessageCtrl">
                        <div class="form-group">
-                           <textarea required name="newMessage" class="form-control"
-                                     ng-model="newMessage" ng-click="createMessage()"></textarea>
+                           <textarea required ctrl-enter-new-line="createMessage()" name="newMessage" class="form-control"
+                                     ng-model="newMessage" ></textarea>
                        </div>
                    </form>
                </div>
@@ -43,25 +43,61 @@
 </div>
 </body>
 <script>
-    var socket = io.connect('http://localhost:8080/');
-    socket.on('error',function(err){
-        console.log(err);
-    });
-    socket.on('connect',function(err){
-        console.log('连接成功');
-    });
-    socket.on('message',function(message){
-        console.log(message);
-        socket.emit('message',message+' too');
-    });
+
+
 
     var app = angular.module('frontModule',[]);
-    app.controller('RoomCtrl',function($rootScope,$scope){
-        $rootScope.messages = ['默认聊天信息'];
+    app.factory('socket',function($rootScope){
+        var socket = io();
+        return {
+            on:function(event,callback){
+                socket.on(event,function(){
+                    console.log('callback');
+                    var args = arguments;
+                    $rootScope.$apply(function(){
+                        callback.apply(socket,args);
+                    });
+                });
+            },
+            emit:function(event,data){
+                socket.emit(event,data);
+            }
+        }
     });
-    app.controller('MessageCtrl',function($rootScope,$scope){
+
+    app.controller('RoomCtrl',function($scope,socket){
+        $scope.messages = [];
+        socket.on('message',function(message){
+            $scope.messages.push(message);
+        });
+    });
+    app.controller('MessageCtrl',function($rootScope,$scope,socket){
         $scope.createMessage = function(){
-            $rootScope.messages.push($scope.newMessage);
+            socket.emit('message',$scope.newMessage);
+        }
+    });
+    app.directive('ctrlEnterNewLine',function(){
+        return function(scope,element,attrs){
+            var ctrlDown = false;
+            element.bind('keydown',function(event){
+                if(event.which == 17){
+                    ctrlDown = true;
+                    setTimeout(function(){
+                        ctrlDown = false;
+                    },1000);
+                }else if(event.which == 13){
+                    if(ctrlDown){
+                        element.val(element.val()+'\n');
+                    }else{
+                        scope.$apply(function(){
+                            scope.$eval(attrs.ctrlEnterNewLine);
+                        })
+                        event.preventDefault();
+                    }
+                }
+
+
+            });
         }
     });
 </script>

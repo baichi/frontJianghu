@@ -12,8 +12,7 @@ app.use(function(req,res){
 var server = app.listen(8080);
 var io = require('socket.io').listen(server);
 io.on('connection',function(socket){
-    socket.emit('message','hello client');
     socket.on('message',function(message){
-        console.log(message);
+        io.emit('message',message);
     });
 });
