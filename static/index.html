@@ -3,8 +3,22 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title></title>
+    <script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
-hello
+
 </body>
+<script>
+    var socket = io.connect('http://localhost:8080/');
+    socket.on('error',function(err){
+        console.log(err);
+    });
+    socket.on('connect',function(err){
+        console.log('连接成功');
+    });
+    socket.on('message',function(message){
+        console.log(message);
+        socket.emit('message',message+' too');
+    });
+</script>
 </html>
