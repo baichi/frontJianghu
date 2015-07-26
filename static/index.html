@@ -16,15 +16,15 @@
         <div class="navbar-header">
             <a href="">前端江湖</a>
         </div>
-        <div class="collapse navbar-collapse">
+        <div class="collapse navbar-collapse" ng-controller="NavCtrl">
             <ul class="nav navbar-nav">
-                <li><a href="#/">欢迎</a></li>
-                <li><a href="#/street">大街</a></li>
-                <li><a href="#/login">重出江湖</a></li>
-                <li><a href="#/reg">初涉江湖</a></li>
+                <li ng-class="{active:isActive('/')}"><a href="#/">欢迎</a></li>
+                <li ng-class="{active:isActive('/street')}" ng-show="currentUser.username"><a href="#/street">大街</a></li>
+                <li ng-class="{active:isActive('/login')}" ng-hide="currentUser.username"><a href="#/login">重出江湖</a></li>
+                <li ng-class="{active:isActive('/reg')}" ng-hide="currentUser.username"><a href="#/reg">初涉江湖</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="">{{currentUser.username}}</a></li>
+                <li><a href="#" ng-click="logout()"><img ng-src="{{currentUser.avatar}}">{{currentUser.username}}</a></li>
             </ul>
         </div>
     </div>
@@ -40,6 +40,7 @@
 <script src="/js/controllers/RegCtrl.js"></script>
 <script src="/js/controllers/HomeCtrl.js"></script>
 <script src="/js/controllers/StreetCtrl.js"></script>
+<script src="/js/controllers/NavCtrl.js"></script>
 <script src="/js/directives/autoScroll.js"></script>
 <script src="/js/directives/ctrlEnterNewLine.js"></script>
 </html>
