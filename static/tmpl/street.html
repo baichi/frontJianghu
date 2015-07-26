@@ -3,7 +3,7 @@
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">前端江湖</div>
-                <div class="panel-body" ng-controller="StreetCtrl">
+                <div class="panel-body" >
                     <div class="list-group" auto-scroll style="height:300px;overflow-y:auto">
                         <div class="list-group-item" ng-repeat="message in messages track by $index">
                             匿名: {{message}}
@@ -11,7 +11,7 @@
                     </div>
                 </div>
                 <div class="panel-footer">
-                    <form action="" role="form" >
+                    <form action="" role="form" ng-controller="MessageCtrl">
                         <div class="form-group">
                            <textarea required ctrl-enter-new-line="createMessage()" name="newMessage" class="form-control"
                                      ng-model="newMessage" ></textarea>

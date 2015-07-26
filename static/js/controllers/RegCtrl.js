@@ -6,7 +6,6 @@ angular.module('frontModule').controller('RegCtrl',function($rootScope,$scope,$h
             method:'POST',
             data:$scope.user
         }).success(function(user){
-            console.log(user);
             $rootScope.currentUser = user;
             $location.path('/');
         }).error(function(){
