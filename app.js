@@ -37,6 +37,7 @@ var io = require('socket.io').listen(server);
 var messages = [];
 io.on('connection',function(socket){
     socket.on('message',function(message){
+        message.createDate = new Date();
         messages.push(message);
         io.emit('message',message);
     });

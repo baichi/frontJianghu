@@ -1,4 +1,4 @@
-angular.module('frontModule',['ngRoute'])
+angular.module('frontModule',['ngRoute','angularMoment'])
     .config(function($routeProvider){
     $routeProvider.when('/',{
         templateUrl:'tmpl/home.html',

@@ -6,7 +6,7 @@
                 <div class="panel-body" >
                     <div class="list-group" auto-scroll style="height:300px;overflow-y:auto">
                         <div class="list-group-item" ng-repeat="message in messages track by $index">
-                            匿名: {{message}}
+                            <img style="width:16px;height:16px" ng-src="{{message.creator.avatar}}">{{message.creator.username}}: {{message.content}} <time am-time-ago="message.createDate"></time>
                         </div>
                     </div>
                 </div>

@@ -1,6 +1,5 @@
 angular.module('frontModule').controller('NavCtrl',function($rootScope,$scope,socket,$http,$location){
     $scope.isActive = function(path){
-        console.log(path,$location.path());
         return path === $location.path();
     }
 
