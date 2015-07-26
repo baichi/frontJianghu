@@ -7,7 +7,7 @@ var users = require('./routes/users');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var expressSession = require('express-session');
-var MongoStore = require('connect-mongo')(expresSession);
+var MongoStore = require('connect-mongo')(expressSession);
 var app = express();//生成express中间件
 app.use(logger('dev'));
 //设置静态文件目录
@@ -19,6 +19,8 @@ app.use(bodyParser.urlencoded({extended:false}));
 app.use(expressSession({
     //cookie密钥
     secret:'front',
+    resave:true,
+    saveUninitialized:true,
     cookie:{
         maxAge:60*1000*60
     },
