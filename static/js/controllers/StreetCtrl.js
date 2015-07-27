@@ -1,14 +1,27 @@
-angular.module('frontModule').controller('StreetCtrl',function($scope,socket){
+angular.module('frontModule').controller('StreetCtrl', function ($rootScope, $scope, socket) {
     $scope.messages = [];
-    socket.on('allMessages',function(messages){
-        $scope.messages.length = 0;
-        messages.forEach(function(message){
+    var allFn = $scope.$on('allMessages', function (event, messages) {
+        $scope.$apply(function () {
+            $scope.messages = messages;
+        });
+    });
+    var msgFn = $scope.$on('message', function (event, message) {
+        $scope.$apply(function () {
             $scope.messages.push(message);
         });
     });
-    socket.emit('getAllMessages');
-    socket.on('message',function(message){
-        console.log('message',message);
-        $scope.messages.push(message);
+    socket.getAllMessages();
+    $scope.newMessage = "";
+    $scope.createMessage = function () {
+        socket.addNew({
+            creator: $rootScope.currentUser,
+            content: $scope.newMessage
+        });
+        $scope.newMessage = '';
+    };
+
+    $scope.$on('$destroy', function () {
+        allFn();
+        msgFn();
     });
 });
